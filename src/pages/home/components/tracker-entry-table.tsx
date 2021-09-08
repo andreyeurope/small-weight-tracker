@@ -14,6 +14,7 @@ import {
   Mood as MoodIcon,
   SentimentVeryDissatisfied,
   SentimentSatisfied,
+  Delete,
 } from "@material-ui/icons";
 import { Mood } from "../../../common/models/mood";
 import { TrackerEntry } from "../../../common/models/tracker-entry";
@@ -21,10 +22,11 @@ import { TrackerEntry } from "../../../common/models/tracker-entry";
 interface TrackerEntryTableProps {
   items: TrackerEntry[];
   onEditItem: (entry: TrackerEntry) => void;
+  onRemoveItem: (id: number) => void;
 }
 
 export const TrackerEntryTable = (props: TrackerEntryTableProps) => {
-  const { items, onEditItem } = props;
+  const { items, onEditItem, onRemoveItem } = props;
 
   return (
     <TableContainer component={Paper}>
@@ -58,6 +60,13 @@ export const TrackerEntryTable = (props: TrackerEntryTableProps) => {
                 <Tooltip title="Edit">
                   <IconButton onClick={() => onEditItem(row)}>
                     <Edit />
+                  </IconButton>
+                </Tooltip>
+              </TableCell>
+              <TableCell align="right">
+                <Tooltip title="Delete">
+                  <IconButton onClick={() => onRemoveItem(row.id)}>
+                    <Delete />
                   </IconButton>
                 </Tooltip>
               </TableCell>

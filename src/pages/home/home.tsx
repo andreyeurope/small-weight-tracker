@@ -1,5 +1,5 @@
 import { Box, Container, Grid, Paper } from "@material-ui/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../common/hooks/store-hooks";
 import { changeName } from "../../common/state/user-slice";
 import { Line } from "react-chartjs-2";
@@ -8,6 +8,7 @@ import { TrackerEntry } from "../../common/models/tracker-entry";
 import {
   addTrackerEntry,
   editTrackerEntry,
+  removeTrackerEntry,
 } from "../../common/state/tracker-slice";
 import { EditNameDialog } from "./components/edit-name-dialog";
 import { Header } from "./components/header";
@@ -61,6 +62,12 @@ export const Home = () => {
     ],
   };
 
+  useEffect(() => {
+    if (!openTrackerEntryDialog) {
+      setEditEntry(undefined);
+    }
+  }, [openTrackerEntryDialog]);
+
   return (
     <>
       <Container maxWidth="md">
@@ -90,6 +97,9 @@ export const Home = () => {
                 onEditItem={(entry) => {
                   setEditEntry(entry);
                   setTrackerEntryDialogShown(true);
+                }}
+                onRemoveItem={(id) => {
+                  dispatch(removeTrackerEntry(id));
                 }}
               />
             </Grid>
