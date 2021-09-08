@@ -6,7 +6,9 @@ interface TrackerState {
   entries: TrackerEntry[];
 }
 
-interface EntryShell extends Omit<TrackerEntry, "id"> {}
+interface EntryShell extends Omit<TrackerEntry, "id" | "date"> {
+  date: number;
+}
 
 interface EditEntryPayload {
   id: number;
@@ -28,7 +30,7 @@ export const trackerSlice = createSlice({
           ...action.payload,
           id: generateId(),
         },
-      ];
+      ].sort((a, b) => a.date - b.date);
     },
     editTrackerEntry: (state, action: PayloadAction<EditEntryPayload>) => {
       const filteredEntries = state.entries.filter(
@@ -43,7 +45,7 @@ export const trackerSlice = createSlice({
           ...action.payload.entry,
           id: action.payload.id,
         },
-      ];
+      ].sort((a, b) => a.date - b.date);
     },
     removeTrackerEntry: (state, action: PayloadAction<number>) => {
       state.entries = state.entries.filter((e) => e.id !== action.payload);
